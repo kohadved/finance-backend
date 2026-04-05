@@ -4,7 +4,7 @@
   "description": "Finance Data Processing and Access Control Backend",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node src/config/seed.js && node src/server.js",
     "dev": "nodemon src/server.js",
     "seed": "node src/config/seed.js"
   },

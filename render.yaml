@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: finance-backend
+    runtime: node
+    buildCommand: npm install && npm run seed
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DB_PATH
+        value: /opt/render/project/src/data/finance.db

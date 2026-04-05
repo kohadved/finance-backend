@@ -52,11 +52,28 @@ function seed() {
   const insertRecords = db.transaction((rows) => rows.forEach(r => insertRecord.run(r)));
   insertRecords(records);
 
-  console.log('Seed complete.\n');
-  console.log('Demo accounts:');
+  console.log('Seed complete.');
   console.log('  admin@finance.com   / Admin123!   (admin)');
   console.log('  analyst@finance.com / Analyst123! (analyst)');
   console.log('  viewer@finance.com  / Viewer123!  (viewer)');
 }
 
-seed();
+/**
+ * seedIfEmpty — seeds only when the users table has no rows.
+ * Used at server startup so Railway's ephemeral container always has demo data,
+ * without wiping any data that was added after the initial seed.
+ */
+function seedIfEmpty() {
+  const count = db.prepare('SELECT COUNT(*) as n FROM users').get().n;
+  if (count === 0) {
+    console.log('Database is empty — running seed...');
+    seed();
+  }
+}
+
+module.exports = { seed, seedIfEmpty };
+
+// When run directly (npm run seed) — always re-seeds
+if (require.main === module) {
+  seed();
+}
